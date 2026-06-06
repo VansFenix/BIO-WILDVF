@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WildVF</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Звёздное небо */
+        .stars-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle linear infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Падающие звёзды */
+        .shooting-star {
+            position: absolute;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, white, transparent);
+            animation: shoot linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: translateX(0) translateY(0) rotate(-45deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(300px) translateY(300px) rotate(-45deg);
+                opacity: 0;
+            }
+        }
+
+        /* Луна */
+        .moon {
+            position: absolute;
+            right: 5%;
+            top: 10%;
+            width: 120px;
+            height: 120px;
+            z-index: 2;
+            animation: moonRotate 20s linear infinite;
+        }
+
+        .moon-body {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #ffffff 0%, #f0f0f0 40%, #d0d0d0 100%);
+            box-shadow: 0 0 60px rgba(255, 255, 255, 0.3), 
+                        0 0 120px rgba(255, 255, 255, 0.1),
+                        inset -20px -20px 40px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        /* Кратеры на луне */
+        .crater {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(200, 200, 200, 0.8), rgba(150, 150, 150, 0.4));
+            box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .crater-1 {
+            width: 20px;
+            height: 20px;
+            top: 25%;
+            left: 30%;
+        }
+
+        .crater-2 {
+            width: 15px;
+            height: 15px;
+            top: 45%;
+            left: 55%;
+        }
+
+        .crater-3 {
+            width: 12px;
+            height: 12px;
+            top: 60%;
+            left: 25%;
+        }
+
+        .crater-4 {
+            width: 18px;
+            height: 18px;
+            top: 35%;
+            left: 65%;
+        }
+
+        .crater-5 {
+            width: 10px;
+            height: 10px;
+            top: 70%;
+            left: 50%;
+        }
+
+        @keyframes moonRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Цветные точки */
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            animation: bounce 1.5s infinite ease-in-out;
+        }
+
+        .dot:nth-child(1) { background: #0088cc; animation-delay: 0s; }
+        .dot:nth-child(2) { background: #ff4444; animation-delay: 0.2s; }
+        .dot:nth-child(3) { background: #ffcc00; animation-delay: 0.4s; }
+        .dot:nth-child(4) { background: #00ff66; animation-delay: 0.6s; }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* Заголовок */
+        .title {
+            color: #0088cc;
+            font-size: 2.5em;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: glow 2s ease-in-out infinite alternate, slideDown 0.8s ease-out;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #0088cc, 0 0 20px #0088cc; }
+            to { text-shadow: 0 0 20px #0088cc, 0 0 40px #0088cc, 0 0 60px #0088cc; }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Статус онлайн */
+        .status {
+            color: #00ff66;
+            font-size: 1em;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            animation: fadeIn 1s ease-out 0.5s both;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff66;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 255, 102, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 255, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 255, 102, 0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Кнопки */
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 18px;
+            margin-bottom: 15px;
+            border-radius: 15px;
+            border: 2px solid;
+            font-size: 1.1em;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out both;
+        }
+
+        .btn:nth-child(1) { animation-delay: 0.6s; }
+        .btn:nth-child(2) { animation-delay: 0.8s; }
+        .btn:nth-child(3) { animation-delay: 1.0s; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background: #0088cc;
+            color: white;
+            border-color: #0088cc;
+        }
+
+        .btn-primary:hover {
+            background: #0099e6;
+            box-shadow: 0 10px 30px rgba(0, 136, 204, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #0088cc;
+            border-color: #0088cc;
+        }
+
+        .btn-outline:hover {
+            background: #0088cc;
+            color: white;
+        }
+
+        .icon {
+            font-size: 1.3em;
+        }
+
+        @media (max-width: 768px) {
+            .moon { width: 90px; height: 90px; right: 3%; }
+            .title { font-size: 2em; }
+            .btn { font-size: 1em; padding: 15px; }
+        }
+
+        @media (max-width: 480px) {
+            .moon { width: 70px; height: 70px; right: 2%; top: 5%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Звёздное небо -->
+    <div class="stars-bg" id="starsBg">
+        <!-- Луна -->
+        <div class="moon">
+            <div class="moon-body">
+                <div class="crater crater-1"></div>
+                <div class="crater crater-2"></div>
+                <div class="crater crater-3"></div>
+                <div class="crater crater-4"></div>
+                <div class="crater crater-5"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Цветные точки -->
+        <div class="dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        <!-- Заголовок -->
+        <h1 class="title">WildVF</h1>
+
+        <!-- Статус -->
+        <div class="status">
+            <span class="status-dot"></span>
+            <span>Online</span>
+        </div>
+
+        <!-- Кнопки -->
+        <a href="#" class="btn btn-primary">
+            <span class="icon">📱</span>
+            TELEGRAM
+        </a>
+
+        <a href="#" class="btn btn-outline">
+            <span class="icon">👥</span>
+            ТГ КАНАЛ
+        </a>
+
+        <a href="#" class="btn btn-outline">
+            <span class="icon">🛡️</span>
+            ЛУЧШИЙ ВПН
+        </a>
+    </div>
+
+    <script>
+        const starsBg = document.getElementById('starsBg');
+
+        // Генерация звёзд
+        for (let i = 0; i < 150; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            
+            const size = 1 + Math.random() * 3;
+            const x = Math.random() * 100;
+            const y = Math.random() * 100;
+            const duration = 2 + Math.random() * 4;
+            const delay = Math.random() * 5;
+            
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = x + '%';
+            star.style.top = y + '%';
+            star.style.animationDuration = duration + 's';
+            star.style.animationDelay = delay + 's';
+            
+            // Некоторые звёзды голубоватые
+            if (Math.random() > 0.7) {
+                star.style.background = '#b0c4de';
+                star.style.boxShadow = `0 0 ${size * 2}px #b0c4de`;
+            } else {
+                star.style.boxShadow = `0 0 ${size * 2}px white`;
+            }
+            
+            starsBg.appendChild(star);
+        }
+
+        // Падающие звёзды
+        function createShootingStar() {
+            const shootingStar = document.createElement('div');
+            shootingStar.className = 'shooting-star';
+            
+            const x = Math.random() * 80;
+            const y = Math.random() * 50;
+            const duration = 1 + Math.random() * 2;
+            
+            shootingStar.style.left = x + '%';
+            shootingStar.style.top = y + '%';
+            shootingStar.style.animationDuration = duration + 's';
+            
+            starsBg.appendChild(shootingStar);
+            
+            setTimeout(() => {
+                shootingStar.remove();
+            }, duration * 1000);
+        }
+
+        // Падающие звёзды каждые 3-8 секунд
+        setInterval(() => {
+            if (Math.random() > 0.5) {
+                createShootingStar();
+            }
+        }, 3000);
+
+        // Эффект параллакса при движении мыши
+        document.addEventListener('mousemove', (e) => {
+            const dots = document.querySelectorAll('.dot');
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+            
+            dots.forEach((dot, index) => {
+                const speed = (index + 1) * 0.5;
+                dot.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
