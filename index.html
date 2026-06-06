@@ -55,7 +55,6 @@
             50% { opacity: 1; transform: scale(1.2); }
         }
 
-        /* Падающие звёзды */
         .shooting-star {
             position: absolute;
             width: 100px;
@@ -98,7 +97,6 @@
             position: relative;
         }
 
-        /* Кратеры на луне */
         .crater {
             position: absolute;
             border-radius: 50%;
@@ -106,40 +104,11 @@
             box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        .crater-1 {
-            width: 20px;
-            height: 20px;
-            top: 25%;
-            left: 30%;
-        }
-
-        .crater-2 {
-            width: 15px;
-            height: 15px;
-            top: 45%;
-            left: 55%;
-        }
-
-        .crater-3 {
-            width: 12px;
-            height: 12px;
-            top: 60%;
-            left: 25%;
-        }
-
-        .crater-4 {
-            width: 18px;
-            height: 18px;
-            top: 35%;
-            left: 65%;
-        }
-
-        .crater-5 {
-            width: 10px;
-            height: 10px;
-            top: 70%;
-            left: 50%;
-        }
+        .crater-1 { width: 20px; height: 20px; top: 25%; left: 30%; }
+        .crater-2 { width: 15px; height: 15px; top: 45%; left: 55%; }
+        .crater-3 { width: 12px; height: 12px; top: 60%; left: 25%; }
+        .crater-4 { width: 18px; height: 18px; top: 35%; left: 65%; }
+        .crater-5 { width: 10px; height: 10px; top: 70%; left: 50%; }
 
         @keyframes moonRotate {
             0% { transform: rotate(0deg); }
@@ -318,7 +287,6 @@
 <body>
     <!-- Звёздное небо -->
     <div class="stars-bg" id="starsBg">
-        <!-- Луна -->
         <div class="moon">
             <div class="moon-body">
                 <div class="crater crater-1"></div>
@@ -331,7 +299,6 @@
     </div>
 
     <div class="container">
-        <!-- Цветные точки -->
         <div class="dots">
             <div class="dot"></div>
             <div class="dot"></div>
@@ -339,27 +306,25 @@
             <div class="dot"></div>
         </div>
 
-        <!-- Заголовок -->
         <h1 class="title">WildVF</h1>
 
-        <!-- Статус -->
         <div class="status">
             <span class="status-dot"></span>
             <span>Online</span>
         </div>
 
-        <!-- Кнопки -->
-        <a href="#" class="btn btn-primary">
+        <!-- Кнопки с реальными ссылками -->
+        <a href="https://t.me/"@vansFenix"" class="btn btn-primary" target="_blank">
             <span class="icon">📱</span>
             TELEGRAM
         </a>
 
-        <a href="#" class="btn btn-outline">
+        <a href="https://t.me/biovansFenix" class="btn btn-outline" target="_blank">
             <span class="icon">👥</span>
             ТГ КАНАЛ
         </a>
 
-        <a href="#" class="btn btn-outline">
+        <a href="https://t.me/wildVF" class="btn btn-outline" target="_blank">
             <span class="icon">🛡️</span>
             ЛУЧШИЙ ВПН
         </a>
@@ -368,7 +333,6 @@
     <script>
         const starsBg = document.getElementById('starsBg');
 
-        // Генерация звёзд
         for (let i = 0; i < 150; i++) {
             const star = document.createElement('div');
             star.className = 'star';
@@ -386,7 +350,6 @@
             star.style.animationDuration = duration + 's';
             star.style.animationDelay = delay + 's';
             
-            // Некоторые звёзды голубоватые
             if (Math.random() > 0.7) {
                 star.style.background = '#b0c4de';
                 star.style.boxShadow = `0 0 ${size * 2}px #b0c4de`;
@@ -397,7 +360,6 @@
             starsBg.appendChild(star);
         }
 
-        // Падающие звёзды
         function createShootingStar() {
             const shootingStar = document.createElement('div');
             shootingStar.className = 'shooting-star';
@@ -417,14 +379,12 @@
             }, duration * 1000);
         }
 
-        // Падающие звёзды каждые 3-8 секунд
         setInterval(() => {
             if (Math.random() > 0.5) {
                 createShootingStar();
             }
         }, 3000);
 
-        // Эффект параллакса при движении мыши
         document.addEventListener('mousemove', (e) => {
             const dots = document.querySelectorAll('.dot');
             const x = (e.clientX / window.innerWidth - 0.5) * 20;
