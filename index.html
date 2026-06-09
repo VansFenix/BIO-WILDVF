@@ -115,45 +115,89 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Цветные точки */
-        .dots {
+        /* ===== МАЛЕНЬКАЯ ВОЛНА (замена шариков) ===== */
+        .wave-container {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            align-items: center;
             margin-bottom: 20px;
+            height: 40px;
         }
 
-        .dot {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            animation: bounce 1.5s infinite ease-in-out;
+        .wave-bar {
+            width: 6px;
+            height: 100%;
+            border-radius: 10px;
+            margin: 0 3px;
+            animation: waveFlow 1.2s ease-in-out infinite;
+            /* Переливающийся градиент */
+            background: linear-gradient(180deg, 
+                #0088cc 0%, 
+                #a855f7 25%, 
+                #ec4899 50%, 
+                #ffcc00 75%, 
+                #00ff66 100%);
+            background-size: 100% 300%;
+            animation: waveFlow 1.2s ease-in-out infinite, waveGradient 2s linear infinite;
+            box-shadow: 0 0 10px rgba(0, 136, 204, 0.5);
         }
 
-        .dot:nth-child(1) { background: #0088cc; animation-delay: 0s; }
-        .dot:nth-child(2) { background: #ff4444; animation-delay: 0.2s; }
-        .dot:nth-child(3) { background: #ffcc00; animation-delay: 0.4s; }
-        .dot:nth-child(4) { background: #00ff66; animation-delay: 0.6s; }
+        .wave-bar:nth-child(1) { animation-delay: 0s; height: 15px; }
+        .wave-bar:nth-child(2) { animation-delay: 0.1s; height: 25px; }
+        .wave-bar:nth-child(3) { animation-delay: 0.2s; height: 35px; }
+        .wave-bar:nth-child(4) { animation-delay: 0.3s; height: 25px; }
+        .wave-bar:nth-child(5) { animation-delay: 0.4s; height: 15px; }
+        .wave-bar:nth-child(6) { animation-delay: 0.5s; height: 20px; }
+        .wave-bar:nth-child(7) { animation-delay: 0.6s; height: 30px; }
+        .wave-bar:nth-child(8) { animation-delay: 0.7s; height: 20px; }
+        .wave-bar:nth-child(9) { animation-delay: 0.8s; height: 15px; }
+        .wave-bar:nth-child(10) { animation-delay: 0.9s; height: 25px; }
+        .wave-bar:nth-child(11) { animation-delay: 1.0s; height: 35px; }
+        .wave-bar:nth-child(12) { animation-delay: 1.1s; height: 25px; }
+        .wave-bar:nth-child(13) { animation-delay: 1.2s; height: 15px; }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+        @keyframes waveFlow {
+            0%, 100% { 
+                transform: scaleY(0.3); 
+                opacity: 0.6;
+            }
+            50% { 
+                transform: scaleY(1); 
+                opacity: 1;
+                box-shadow: 0 0 20px rgba(168, 85, 247, 0.8), 0 0 40px rgba(236, 72, 153, 0.5);
+            }
         }
 
-        /* Заголовок */
+        @keyframes waveGradient {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 0% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        /* ===== Градиентный текст ===== */
         .title {
-            color: #0088cc;
             font-size: 2.5em;
             font-weight: 900;
             margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 2px;
-            animation: glow 2s ease-in-out infinite alternate, slideDown 0.8s ease-out;
+            background: linear-gradient(90deg, #0088cc, #a855f7, #ec4899, #0088cc);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideDown 0.8s ease-out, gradientShift 3s linear infinite, glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         @keyframes glow {
-            from { text-shadow: 0 0 10px #0088cc, 0 0 20px #0088cc; }
-            to { text-shadow: 0 0 20px #0088cc, 0 0 40px #0088cc, 0 0 60px #0088cc; }
+            from { filter: drop-shadow(0 0 10px rgba(0, 136, 204, 0.8)); }
+            to { filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.8)) drop-shadow(0 0 40px rgba(236, 72, 153, 0.6)); }
         }
 
         @keyframes slideDown {
@@ -192,7 +236,7 @@
             to { opacity: 1; }
         }
 
-        /* Кнопки */
+        /* ===== Кнопки с 3D и Gradient Borders ===== */
         .btn {
             display: flex;
             align-items: center;
@@ -202,7 +246,6 @@
             padding: 18px;
             margin-bottom: 15px;
             border-radius: 15px;
-            border: 2px solid;
             font-size: 1.1em;
             font-weight: 700;
             text-transform: uppercase;
@@ -212,6 +255,9 @@
             position: relative;
             overflow: hidden;
             animation: slideUp 0.6s ease-out both;
+            border: none;
+            transform-style: preserve-3d;
+            perspective: 1000px;
         }
 
         .btn:nth-child(1) { animation-delay: 0.6s; }
@@ -238,39 +284,94 @@
             left: 100%;
         }
 
-        .btn:hover {
+        .btn-primary {
+            background: #0088cc;
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 17px;
+            background: linear-gradient(45deg, #0088cc, #a855f7, #ec4899, #0088cc);
+            background-size: 300% 300%;
+            z-index: -1;
+            animation: borderGradient 3s ease infinite;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .btn-primary:hover::after {
+            opacity: 1;
+        }
+
+        .btn-primary:hover {
             transform: scale(1.05) translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0, 136, 204, 0.4), 0 0 20px rgba(168, 85, 247, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #0088cc;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-outline::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 17px;
+            background: linear-gradient(45deg, #0088cc, #00ff66, #ffcc00, #0088cc);
+            background-size: 300% 300%;
+            z-index: -1;
+            animation: borderGradient 3s ease infinite;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .btn-outline:hover::after {
+            opacity: 1;
+            animation: borderGradient 1s ease infinite;
+        }
+
+        .btn-outline:hover {
+            background: rgba(0, 136, 204, 0.1);
+            color: white;
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 136, 204, 0.2);
+        }
+
+        @keyframes borderGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .btn:active {
             transform: scale(0.98);
         }
 
-        .btn-primary {
-            background: #0088cc;
-            color: white;
-            border-color: #0088cc;
-        }
-
-        .btn-primary:hover {
-            background: #0099e6;
-            box-shadow: 0 10px 30px rgba(0, 136, 204, 0.4);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: #0088cc;
-            border-color: #0088cc;
-        }
-
-        .btn-outline:hover {
-            background: #0088cc;
-            color: white;
-        }
-
         .icon {
             font-size: 1.3em;
+        }
+
+        /* Парящие частицы */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) scale(1); opacity: 0; }
         }
 
         @media (max-width: 768px) {
@@ -283,6 +384,7 @@
             .moon { width: 70px; height: 70px; right: 2%; top: 5%; }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
     <!-- Звёздное небо -->
@@ -299,11 +401,21 @@
     </div>
 
     <div class="container">
-        <div class="dots">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
+        <!-- ===== МАЛЕНЬКАЯ ВОЛНА (замена шариков) ===== -->
+        <div class="wave-container">
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
         </div>
 
         <h1 class="title">WildVF</h1>
@@ -313,8 +425,7 @@
             <span>Online</span>
         </div>
 
-        <!-- Кнопки с реальными ссылками -->
-        <a href="https://t.me/vansFenix"" class="btn btn-primary" target="_blank">
+        <a href="https://t.me/@vansFenix" class="btn btn-primary" target="_blank">
             <span class="icon">📱</span>
             TELEGRAM
         </a>
@@ -336,44 +447,44 @@
         for (let i = 0; i < 150; i++) {
             const star = document.createElement('div');
             star.className = 'star';
-            
+
             const size = 1 + Math.random() * 3;
             const x = Math.random() * 100;
             const y = Math.random() * 100;
             const duration = 2 + Math.random() * 4;
             const delay = Math.random() * 5;
-            
+
             star.style.width = size + 'px';
             star.style.height = size + 'px';
             star.style.left = x + '%';
             star.style.top = y + '%';
             star.style.animationDuration = duration + 's';
             star.style.animationDelay = delay + 's';
-            
+
             if (Math.random() > 0.7) {
                 star.style.background = '#b0c4de';
                 star.style.boxShadow = `0 0 ${size * 2}px #b0c4de`;
             } else {
                 star.style.boxShadow = `0 0 ${size * 2}px white`;
             }
-            
+
             starsBg.appendChild(star);
         }
 
         function createShootingStar() {
             const shootingStar = document.createElement('div');
             shootingStar.className = 'shooting-star';
-            
+
             const x = Math.random() * 80;
             const y = Math.random() * 50;
             const duration = 1 + Math.random() * 2;
-            
+
             shootingStar.style.left = x + '%';
             shootingStar.style.top = y + '%';
             shootingStar.style.animationDuration = duration + 's';
-            
+
             starsBg.appendChild(shootingStar);
-            
+
             setTimeout(() => {
                 shootingStar.remove();
             }, duration * 1000);
@@ -385,16 +496,49 @@
             }
         }, 3000);
 
-        document.addEventListener('mousemove', (e) => {
-            const dots = document.querySelectorAll('.dot');
-            const x = (e.clientX / window.innerWidth - 0.5) * 20;
-            const y = (e.clientY / window.innerHeight - 0.5) * 20;
-            
-            dots.forEach((dot, index) => {
-                const speed = (index + 1) * 0.5;
-                dot.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+        // 3D наклон кнопок при наведении
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                btn.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05) translateY(-3px)`;
+            });
+
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1) translateY(0)';
             });
         });
+
+        // Парящие частицы
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            const size = 2 + Math.random() * 4;
+            const x = Math.random() * 100;
+            const duration = 10 + Math.random() * 20;
+            const colors = ['#0088cc', '#a855f7', '#ec4899', '#00ff66', '#ffcc00'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            particle.style.left = x + '%';
+            particle.style.background = color;
+            particle.style.boxShadow = `0 0 ${size * 2}px ${color}`;
+            particle.style.animationDuration = duration + 's';
+
+            starsBg.appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, duration * 1000);
+        }
+
+        setInterval(createParticle, 500);
     </script>
 </body>
 </html>
